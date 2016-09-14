@@ -4,7 +4,7 @@ angular.module('myApp.game', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/game', {
-    templateUrl: 'views/game/game.html',
+    templateUrl: 'app/views/game/game.html',
     controller: 'GameCtrl'
   });
 }])
@@ -27,7 +27,7 @@ angular.module('myApp.game', ['ngRoute'])
 
       preload: function () {
 
-          this.load.path = 'assets/';
+          this.load.path = 'app/assets/';
 
           this.load.image('logo');
 
@@ -54,7 +54,7 @@ angular.module('myApp.game', ['ngRoute'])
 
   };
 
-  function resizeCanvasToContainerElement() {	
+  function resizeCanvasToContainerElement() {
     var containerElement = this.canvas.parentElement;
     var containerWidth = containerElement.offsetWidth;
     var containerHeight = containerElement.offsetHeight;
