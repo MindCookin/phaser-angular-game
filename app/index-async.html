@@ -31,8 +31,9 @@
       'bower_components/angular/angular.js',
       'bower_components/angular-route/angular-route.js',
       'app.js',
-      'view1/view1.js',
-      'view2/view2.js',
+      'views/welcome/welcome.js',
+      'views/game/game.js',
+      'views/results/results.js',
       'components/version/version.js',
       'components/version/version-directive.js',
       'components/version/interpolate-filter.js'
@@ -46,8 +47,9 @@
 </head>
 <body ng-cloak>
   <ul class="menu">
-    <li><a href="#!/view1">view1</a></li>
-    <li><a href="#!/view2">view2</a></li>
+    <li><a href="#!/welcome">Welcome</a></li>
+    <li><a href="#!/game">Game</a></li>
+    <li><a href="#!/results">Results</a></li>
   </ul>
 
   <div ng-view></div>
