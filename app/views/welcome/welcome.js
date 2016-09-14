@@ -9,6 +9,11 @@ angular.module('myApp.welcome', ['ngRoute'])
   });
 }])
 
-.controller('WelcomeCtrl', [function() {
+.controller('WelcomeCtrl', ['OAuth', function(OAuth) {
 
+  var auth = OAuth.query();
+  console.log(auth);
+
+  //var photos = Photos.query();
+  //console.log(photos);
 }]);

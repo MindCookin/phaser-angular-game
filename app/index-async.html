@@ -30,13 +30,16 @@
     $script([
       'bower_components/angular/angular.js',
       'bower_components/angular-route/angular-route.js',
+      'bower_components/phaser/build/phaser.js',
+      'bower_components/angular-resource/angular-resource.js',
       'app.js',
       'views/welcome/welcome.js',
       'views/game/game.js',
       'views/results/results.js',
       'components/version/version.js',
       'components/version/version-directive.js',
-      'components/version/interpolate-filter.js'
+      'components/version/interpolate-filter.js',
+      'services/500px.js'
     ], function() {
       // when all is done, execute bootstrap angular application
       angular.bootstrap(document, ['myApp']);
