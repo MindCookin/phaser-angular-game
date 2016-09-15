@@ -9,6 +9,10 @@ angular.module('myApp.results', ['ngRoute'])
   });
 }])
 
-.controller('ResultsCtrl', [function() {
+.controller('ResultsCtrl', ['$scope', 'GameResults', function($scope, GameResults) {
 
+	var lastScore = GameResults.get();
+
+	$scope.score = lastScore.score;
+	$scope.highscore = lastScore.highscore;
 }]);

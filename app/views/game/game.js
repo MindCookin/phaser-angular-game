@@ -9,10 +9,29 @@ angular.module('myApp.game', ['ngRoute'])
   });
 }])
 
-.controller('GameCtrl', [function() {
+.controller('GameCtrl', ['Photos', '$location', '$rootScope', 'GameResults', function(Photos, $location, $rootScope, GameResults) {
+
+  var photos;
+  var $ = angular.element;
+
+  Photos.query()
+    .$promise.then(function(data) {
+
+      photos = data.photos.map(function (obj) {
+        return obj.image_url;
+      });
+
+      console.log(photos)
+
+      loadGame();
+    })
+
+
   var Clicker = {
       score: 0
   };
+
+  var game;
 
   Clicker.Preloader = function () {};
 
@@ -38,6 +57,8 @@ angular.module('myApp.game', ['ngRoute'])
 
           this.load.spritesheet('sprites', 'sprites.png', 32, 32);
 
+          this.load.images(photos);
+
       },
 
       create: function () {
@@ -53,22 +74,6 @@ angular.module('myApp.game', ['ngRoute'])
       this.filter = null;
 
   };
-
-  function resizeCanvasToContainerElement() {
-    var containerElement = this.canvas.parentElement;
-    var containerWidth = containerElement.offsetWidth;
-    var containerHeight = containerElement.offsetHeight;
-    var xScale = containerWidth / this.width;
-    var yScale = containerHeight / this.height;
-    var newScale = Math.min( xScale, yScale );
-    this.scale.width = newScale * this.width;
-    this.scale.height = newScale * this.height;
-    this.scale.setSize();
-    this.canvas.style.position = 'absolute';
-    this.canvas.style.top = '0';
-    this.canvas.style.left = '0';
-  }
-
 
   Clicker.MainMenu.prototype = {
 
@@ -95,6 +100,11 @@ angular.module('myApp.game', ['ngRoute'])
           score.anchor.x = 0.5;
           score.smoothed = false;
           score.tint = 0xff0000;
+
+          console.log(game.cache.getKeys(Phaser.Cache.IMAGE)[1])
+
+          var photo = this.add.image(this.world.centerX, 48, photos[Math.floor(Math.random() * photos.length)]);
+          logo.anchor.x = 0.5;
 
           this.input.onDown.addOnce(this.start, this);
 
@@ -143,7 +153,6 @@ angular.module('myApp.game', ['ngRoute'])
 
           this.score = 0;
           this.colors = { r: 0.1, g: 0.3, b: 0.6 };
-
       },
 
       create: function () {
@@ -312,8 +321,15 @@ angular.module('myApp.game', ['ngRoute'])
               Clicker.score = this.score;
           }
 
-          this.state.start('Clicker.MainMenu');
+          var score = this.score;
 
+          GameResults.set({
+            score: score            
+          });
+
+          $rootScope.$apply(function() {
+            $location.path('/results');
+          });
       },
 
       render: function () {
@@ -326,17 +342,34 @@ angular.module('myApp.game', ['ngRoute'])
               this.game.debug.text("B: " + this.colors.b, 32, 128 + 64);
           }
 
-      },
-
+      }
   };
 
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+  $(window).on('resize', resizeGame);
 
-  game.state.add('Clicker.Preloader', Clicker.Preloader);
-  game.state.add('Clicker.MainMenu', Clicker.MainMenu);
-  game.state.add('Clicker.Game', Clicker.Game);
+  function resizeGame() {
+    var height = $(window)[0].innerHeight;
+    var width = $(window)[0].innerWidth;
 
-  game.state.start('Clicker.Preloader');
+    game.width = width;
+    game.height = height;
+    game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
+    game.stage._bounds.width = width;
+    game.stage._bounds.height = height;
+  }
+
+
+  function loadGame() {
+
+    game = new Phaser.Game('100%', '100%', Phaser.CANVAS, 'game');
+
+    game.state.add('Clicker.Preloader', Clicker.Preloader);
+    game.state.add('Clicker.MainMenu', Clicker.MainMenu);
+    game.state.add('Clicker.Game', Clicker.Game);
+
+    game.state.start('Clicker.Preloader'); 
+  }
 
 
 }]);
