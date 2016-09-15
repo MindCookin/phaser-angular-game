@@ -9,7 +9,9 @@ angular.module('myApp.game', ['ngRoute'])
   });
 }])
 
-.controller('GameCtrl', ['Photos', '$location', '$rootScope', 'GameResults', 'Game.Preloader', 'Game.Logic', function(Photos, $location, $rootScope, GameResults, Preloader, Logic) {
+.controller('GameCtrl', ['Photos', '$scope', '$rootScope', '$timeout', 'Game.Preloader', 'Game.Logic', function(Photos, $scope, $rootScope, $timeout, Preloader, Logic) {
+
+  $scope.assetsLoaded = false;
 
   Photos.fetch()
     .then(function(data) {
@@ -24,10 +26,28 @@ angular.module('myApp.game', ['ngRoute'])
       game.state.add('Preloader', Preloader(photosURL), true);
       game.state.add('Game', Logic);
 
+      var myScope = $scope;
+      $scope.assetsLoaded = false;
+
+      $rootScope.$on('loaded', function (event) {
+        $scope.$apply(function () {
+            $scope.assetsLoaded = true;
+        });
+
+        $timeout(
+          function() {
+            $scope.$apply(function () {
+              $scope.hidePreloader = true; 
+              game.state.start('Game');
+            });
+          }
+        , 2000);
+      })
+
     });
 }])
 
-.factory('Game.Preloader', function() {
+.factory('Game.Preloader', ['$rootScope', function($rootScope) {
 
   var _photosURL;
 
@@ -51,7 +71,8 @@ angular.module('myApp.game', ['ngRoute'])
       },
 
       create: function () {
-        this.state.start('Game');
+
+        $rootScope.$broadcast('loaded');
       } 
   }
 
@@ -61,7 +82,7 @@ angular.module('myApp.game', ['ngRoute'])
 
     return Preloader;
   }
-})
+}])
 
 .factory('Game.Logic', ['Photos', '$rootScope', '$location', 'GameResults', function(Photos, $rootScope, $location, GameResults) {
 
@@ -123,8 +144,8 @@ angular.module('myApp.game', ['ngRoute'])
               return value.indexOf(ev.key) === 0;
             })
 
+            this.input.keyboard.pressEvent = null;
             this.keysPressed.push(ev.key);
-            ev = null;
 
             if (succes) {
               this.success();
@@ -175,7 +196,6 @@ angular.module('myApp.game', ['ngRoute'])
 
       addScore: function (tween) {
 
-          console.log('termina el twwen')
           //this.currentPhoto.destroy();
 
           this.score += this.calcPoints();
@@ -190,11 +210,14 @@ angular.module('myApp.game', ['ngRoute'])
         this.currentPhoto.anchor.set(0.5);
         this.currentPhoto.x -= this.currentPhoto.width / 2;
         this.currentTags = this.rawPhotoData[this.currentIndex].tags;
+        this.currentPhoto.alpha = 0;
 
         this.speed *= 2;
 
         this.playing = true;
         this.keysPressed = [];
+
+        this.add.tween(this.currentPhoto).to({alpha: 1}, 1000, "Sine.easeOut", true, 100); 
 
         console.log(this.currentTags);
       },

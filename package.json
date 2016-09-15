@@ -14,14 +14,15 @@
     "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.8",
     "karma-junit-reporter": "^0.4.1",
-    "protractor": "^3.2.2"
+    "protractor": "^3.2.2",
+    "watch": "^0.19.2"
   },
   "scripts": {
     "concat": "concat-cli -f app/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js app/bower_components/angular/angular.js app/bower_components/angular-route/angular-route.js app/bower_components/angular-resource/angular-resource.js app/bower_components/phaser/build/phaser.js -o app/vendor/bundle.js",
-    "concat-css": "concat-cli -f app/bower_components/html5-boilerplate/dist/css/normalize.css app/bower_components/html5-boilerplate/dist/css/main.css app/app.css -o app/vendor/bundle.css",
+    "concat-css": "concat-cli -f app/bower_components/html5-boilerplate/dist/css/normalize.css app/bower_components/html5-boilerplate/dist/css/main.css app/css/app.css -o app/vendor/bundle.css",
     "postinstall": "bower install",
     "prestart": "npm install && npm run concat && npm run concat-css",
-    "start": "http-server -a localhost -p 8000 -c-1 ./",
+    "start": "http-server -a localhost -p 8000 -c-1 ./ & 'npm run watch'",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
@@ -29,7 +30,8 @@
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js",
-    "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+    "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\"",
+    "watch": "watch 'npm run concat-css' app/css"
   },
   "dependencies": {}
 }
