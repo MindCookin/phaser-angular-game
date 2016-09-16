@@ -40,12 +40,12 @@
   font-family: 'open_sans';
 }
 
-.wrapper ol {
+.wrapper ol, .wrapper ul{
   font-weight: 200;
   margin: 20px 0;
 }
 
-.wrapper ol li {
+.wrapper ol li, .wrapper ul li {
   margin: 10px 0;
 }
 
@@ -61,9 +61,26 @@
   color: #444;
 }
 
+.wrapper h1.results {
+  margin-bottom: 0;
+  font-size: 45px; 
+}
+
 .wrapper h2 {
   font-family: 'open_sans';
   color: #222;
+}
+
+.wrapper h3 {
+  font-family: 'open_sans';
+  color: #222;
+  text-align: center;
+}
+
+.wrapper h4 {
+  font-family: 'open_sans';
+  color: #222;
+  text-align: center;
 }
 
 .wrapper .button-group {
@@ -99,8 +116,14 @@
 .fadeIn1 {
   animation-delay: 0s;
 }
+.fadeIn15 {
+  animation-delay: .5s;
+}
 .fadeIn2 {
   animation-delay: 1s;
+}
+.fadeIn25 {
+  animation-delay: 1.5s;
 }
 .fadeIn3 {
   animation-delay: 2s;
@@ -254,4 +277,16 @@ body {
   float: left;
   width: 15%;
   margin: 0 1%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.wrapper ul {
+  list-style: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-top: 50px;
 }

@@ -152,6 +152,9 @@ angular.module('myApp.game', ['ngRoute'])
 
         this.playing = false;
 
+        this.successfulTags = ([] || this.successfulTags).concat(tags);
+        this.totalTags = ([] || this.totalTags).concat(this.currentTags);
+
         var tween = this.add.tween(this.currentPhoto).to({
           x: this.world.centerX,
           y: this.world.centerY,
@@ -190,6 +193,8 @@ angular.module('myApp.game', ['ngRoute'])
         this.totalKeys = this.totalKeys || [];
         this.totalKeys.concat(this.keysPressed);
 
+        console.log(this.totalKeys)
+
         this.totalPhotos = (this.totalPhotos || 0) + 1;
 
         return positionScore + speedScore + keysNeededScore;
@@ -226,11 +231,10 @@ angular.module('myApp.game', ['ngRoute'])
         this.photoTween = this.add.tween(this.currentPhoto).to({x: this.world.width + (this.currentPhoto.width / 2)}, 10000 / this.speed, "Linear", true, 100);
         this.photoTween.onComplete.add(this.gameOver, this);
 
-        // if (mobile) {
+        if (!Phaser.Device.desktop) {
           var tips = this.updateTips();
           $rootScope.$broadcast('tips', tips);
-        //}
-
+        }
 
         console.log(this.currentTags);
       },
@@ -262,10 +266,14 @@ angular.module('myApp.game', ['ngRoute'])
 
       gameOver: function () {
 
-        var newScore = this.score;
-
         GameResults.set({
-          score: newScore
+          score: this.score,
+          keysPressed: this.totalKeys,
+          maxSpeed: this.speed,
+          tags: {
+            successful: this.successfulTags,
+            total: this.totalTags
+          }
         });
 
         this.game.destroy();
