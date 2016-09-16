@@ -7,10 +7,13 @@ angular.module('myApp', [
   'myApp.welcome',
   'myApp.game',
   'myApp.results',
-  'myApp.version'
+  'myApp.version',
+  'chart.js'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
   $routeProvider.otherwise({redirectTo: '/welcome'});
+
+  Chart.defaults.global.colors = [ '#333', '#666', '#999', '#AAA', '#DDD', '#FFF', '#4D5360'];
 }]);

@@ -1,3 +1,12 @@
 
 <div class="preload" ng-class="{'fadeOut': assetsLoaded}" ng-if="!hidePreloader"></div>
 <div id="game" class="game"></div>
+
+<div class="button-group tips">
+	<div class="inner">
+		<a class="button" ng-repeat="tip in tips track by $index" ng-click="onSelect(tip)">
+		  <span class="away">{{tip}}</span>
+		  <span class="over">{{tip}}</span>
+		</a>
+	</div>
+</div>

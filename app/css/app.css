@@ -1,64 +1,89 @@
 /* fonts */
 @font-face {
     font-family: 'open_sans';
-    src: url('../assets/fonts/OpenSans-Light-webfont.eot');
-    src: url('../assets/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../assets/fonts/OpenSans-Light-webfont.woff') format('woff'),
-         url('../assets/fonts/OpenSans-Light-webfont.ttf') format('truetype'),
-         url('../assets/fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+    src: url('../fonts/OpenSans-Light-webfont.eot');
+    src: url('../fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/OpenSans-Light-webfont.woff') format('woff'),
+         url('../fonts/OpenSans-Light-webfont.ttf') format('truetype'),
+         url('../fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'open_sans';
-    src: url('../assets/fonts/OpenSans-Bold-webfont.eot');
-    src: url('../assets/fonts/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../assets/fonts/OpenSans-Bold-webfont.woff') format('woff'),
-         url('../assets/fonts/OpenSans-Bold-webfont.ttf') format('truetype'),
-         url('../assets/fonts/OpenSans-Bold-webfont.svg#open_sanslight') format('svg');
+    src: url('../fonts/OpenSans-Bold-webfont.eot');
+    src: url('../fonts/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/OpenSans-Bold-webfont.woff') format('woff'),
+         url('../fonts/OpenSans-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/OpenSans-Bold-webfont.svg#open_sanslight') format('svg');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'open_sans';
-    src: url('../assets/fonts/OpenSans-Regular-webfont.eot');
-    src: url('../assets/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../assets/fonts/OpenSans-Regular-webfont.woff') format('woff'),
-         url('../assets/fonts/OpenSans-Regular-webfont.ttf') format('truetype'),
-         url('../assets/fonts/OpenSans-Regular-webfont.svg#open_sanslight') format('svg');
+    src: url('../fonts/OpenSans-Regular-webfont.eot');
+    src: url('../fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/OpenSans-Regular-webfont.woff') format('woff'),
+         url('../fonts/OpenSans-Regular-webfont.ttf') format('truetype'),
+         url('../fonts/OpenSans-Regular-webfont.svg#open_sanslight') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 /* app css stylesheet */
 
-.welcome-wrapper {
+.wrapper {
   width: 600px;
   margin: 50px auto;
   font-family: 'open_sans';
 }
 
-.welcome-wrapper ol {
+.wrapper ol {
   font-weight: 200;
   margin: 20px 0;
 }
 
-.welcome-wrapper ol li {
+.wrapper ol li {
   margin: 10px 0;
 }
 
-.welcome-wrapper .button {
+.wrapper.welcome-wrapper .button {
   margin: 60px auto 0;
 }
 
-.welcome-wrapper h1 {
+.wrapper h1 {
   font-size: 70px;
   font-family: 'open_sans';
   text-align: center;
   text-transform: uppercase;
   color: #444;
+}
+
+.wrapper h2 {
+  font-family: 'open_sans';
+  color: #222;
+}
+
+.wrapper .button-group {
+  width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.wrapper .button-group .button {
+  margin: 0 20px;
+  float: left;
+}
+
+.wrapper .share a {
+  color: #333;
+  transition: color .2s;
+}
+
+.wrapper .share a:hover {
+  color: #AAA;
 }
 
 .fadeIn {
@@ -143,6 +168,7 @@ body {
 }
 
 .button {
+  margin: 50px auto 0;
   text-decoration: none;
   box-sizing: border-box;
   height: 50px;
@@ -208,4 +234,25 @@ body {
   0% { -webkit-transform:rotate(0deg); width: 60px; height: 60px; background: #999; }
   50% { -webkit-transform:rotate(180deg); width: 70px; height: 70px;  background: #333; }
   100% { -webkit-transform:rotate(360deg); width: 60px; height: 60px; background: #999; }
+}
+
+.tips.button-group {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+
+}
+
+.tips.button-group .inner {
+  margin: 0 auto;
+  width: 50%;
+  overflow: hidden;
+}
+
+.tips.button-group a {
+  float: left;
+
+  width: 20%;
+  margin: 0 2%;
 }

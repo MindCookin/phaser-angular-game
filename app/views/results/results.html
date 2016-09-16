@@ -1,8 +1,22 @@
-<h1>Congratulations, you made {{score}} {{score > 1 ? 'points' : 'point'}}.</h1>
-<h2>Your highscore is {{highscore}}</h2>
-<p>
-	<ul>
-		<li><a href="#!/welcome">Back to home screen</a></li>
-		<li><a href="#!/game">Back to the game</a></li>
-	</ul>
-</p>
+<div class="wrapper">
+	<h1>You made {{score}} {{score > 1 ? 'points' : 'point'}}.</h1>
+	<h2 class="share">Share your score: 
+
+		<a href="#">
+			<i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+		</a>
+		<a href="#">
+			<i class="fa fa-twitter fa-2x" aria-hidden="true"></i>
+		</a>
+	</h2>
+	<p class="button-group">
+		<a href="#!/welcome" class="button" >
+		  <span class="away">Home</span>
+		  <span class="over">Home</span>
+		</a>
+		<a href="#!/game" class="button">
+		  <span class="away">Beat your mark</span>
+		  <span class="over">Let's Play</span>
+		  </a>
+	</p>
+</div>

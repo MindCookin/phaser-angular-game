@@ -45,6 +45,16 @@ angular.module('myApp.game', ['ngRoute'])
       })
 
     });
+
+    $rootScope.$on('tips', function (event, data) {
+      $scope.$apply(function () {
+        $scope.tips = data;
+      })
+    });
+
+    $scope.onSelect = function (selection) {
+      $rootScope.$broadcast('selection', selection);
+    }
 }])
 
 .factory('Game.Preloader', ['$rootScope', function($rootScope) {
@@ -86,15 +96,12 @@ angular.module('myApp.game', ['ngRoute'])
 
 .factory('Game.Logic', ['Photos', '$rootScope', '$location', 'GameResults', function(Photos, $rootScope, $location, GameResults) {
 
+  var KEYS = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"];
+
   var Game = function () {
 
     this.score = 0;
     this.scoreText = null;
-
-    this.bigText = null;
-
-    this.stars = null;
-    this.timer = null;
   };
 
   Game.prototype = {
@@ -102,25 +109,17 @@ angular.module('myApp.game', ['ngRoute'])
     init: function () {
 
         this.score = 0;
+
+        $rootScope.$on('selection', function (ev, data) {
+          this.selectKey(data);
+        }.bind(this));
     },
 
     create: function () {
 
-        this.timeText = this.add.bitmapText(this.world.centerX + 32, 128, 'digits', '10', 1024);
-        this.timeText.anchor.set(0.5);
-        this.timeText.smoothed = false;
-        this.timeText.alpha = 0.3;
-
-        this.stars = this.add.group();
-
         this.scoreText = this.add.bitmapText(64, 12, 'fat-and-tiny', 'SCORE: 0', 32);
         this.scoreText.smoothed = false;
         this.scoreText.tint = 0x000000;
-        //this.scoreText.visible = false;
-
-        this.timer = this.time.create(false);
-        this.timer.add(10000, this.timeUp, this);
-        this.timer.start();
 
         this.rawPhotoData = Photos.get();
 
@@ -133,33 +132,24 @@ angular.module('myApp.game', ['ngRoute'])
 
       update: function () {
 
-          if (this.timeText.visible) {
-              this.timeText.text = 10 - Math.floor(this.timer.seconds);
-          }
-
           if (this.playing && this.input.keyboard.pressEvent) {
 
             var ev = this.input.keyboard.pressEvent;
-            var succes = this.currentTags.some(function (value) {
+            var success = this.currentTags.filter(function (value) {
               return value.indexOf(ev.key) === 0;
             })
 
-            this.input.keyboard.pressEvent = null;
             this.keysPressed.push(ev.key);
 
-            if (succes) {
-              this.success();
+            if (success.length > 0) {
+              this.success(success);
             }
-          }
 
-          if (this.playing && this.currentPhoto.x - (this.currentPhoto.width / 2) > this.world.width) {
-            this.gameOver();
+            this.input.keyboard.pressEvent = null;
           }
-
-          this.currentPhoto.x += this.speed;
       },
 
-      success: function () {
+      success: function (tags) {
 
         this.playing = false;
 
@@ -169,6 +159,18 @@ angular.module('myApp.game', ['ngRoute'])
           width: 10000,
           height: 10000,
           alpha: 0
+        }, 300, "Sine.easeOut", true, 100);
+
+        var style = { font: "bold 200px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        var text = this.game.add.text(0, 0, tags.toString(), style);
+        text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        text.anchor.set(0.5);
+        text.x = this.world.width / 2;
+        text.y = this.world.height / 2;
+        var tween = this.add.tween(text).to({ 
+          alpha: 0,
+          width: 0,
+          height: 0
         }, 300, "Sine.easeOut", true, 100);
 
         tween.onComplete.add(this.addScore, this);
@@ -189,14 +191,12 @@ angular.module('myApp.game', ['ngRoute'])
         this.totalKeys = this.totalKeys || [];
         this.totalKeys.concat(this.keysPressed);
 
-        console.log(positionScore, speedScore, keysNeededScore)
+        this.totalPhotos = (this.totalPhotos || 0) + 1;
 
         return positionScore + speedScore + keysNeededScore;
       },
 
       addScore: function (tween) {
-
-          //this.currentPhoto.destroy();
 
           this.score += this.calcPoints();
           this.scoreText.text = "SCORE: " + this.score;
@@ -205,6 +205,11 @@ angular.module('myApp.game', ['ngRoute'])
       },
 
       showNextPhoto: function () {
+
+        if (this.photoTween) {
+          this.photoTween.stop();
+        }
+
         this.currentIndex += 1;
         this.currentPhoto = this.add.image(0, this.world.centerY, this.rawPhotoData[this.currentIndex].image_url);
         this.currentPhoto.anchor.set(0.5);
@@ -212,14 +217,49 @@ angular.module('myApp.game', ['ngRoute'])
         this.currentTags = this.rawPhotoData[this.currentIndex].tags;
         this.currentPhoto.alpha = 0;
 
-        this.speed *= 2;
+        this.speed *= 1.2;
 
         this.playing = true;
         this.keysPressed = [];
 
-        this.add.tween(this.currentPhoto).to({alpha: 1}, 1000, "Sine.easeOut", true, 100); 
+        this.add.tween(this.currentPhoto).to({alpha: 1}, 1000, "Sine.easeOut", true, 100);
+        this.photoTween = this.add.tween(this.currentPhoto).to({x: this.world.width + (this.currentPhoto.width / 2)}, 10000 / this.speed, "Linear", true, 100);
+        this.photoTween.onComplete.add(this.gameOver, this);
+
+        // if (mobile) {
+          var tips = this.updateTips();
+          $rootScope.$broadcast('tips', tips);
+        //}
+
 
         console.log(this.currentTags);
+      },
+
+      updateTips: function () {
+        var tips = [this.currentTags[this.game.rnd.integerInRange(0, this.currentTags.length - 1)].substr(0,1)];
+        tips.push(KEYS[this.game.rnd.integerInRange(0, 10)]);
+        tips.push(KEYS[this.game.rnd.integerInRange(10, 20)]);
+        tips.push(KEYS[this.game.rnd.integerInRange(20, KEYS.length - 1)]);
+
+        return tips;
+      },
+
+      selectKey: function (k) {
+
+        console.log (k)
+
+        var success = this.currentTags.some(function (value) {
+          return value.indexOf(k) === 0;
+        })
+
+        if (success) {
+
+            this.keysPressed.push(k);
+
+            this.success(success);
+        } else {
+          this.updateTips();
+        }
       },
 
       gameOver: function () {
