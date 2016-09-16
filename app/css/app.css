@@ -35,7 +35,7 @@
 /* app css stylesheet */
 
 .wrapper {
-  width: 600px;
+  max-width: 600px;
   margin: 50px auto;
   font-family: 'open_sans';
 }
@@ -252,7 +252,6 @@ body {
 
 .tips.button-group a {
   float: left;
-
-  width: 20%;
-  margin: 0 2%;
+  width: 15%;
+  margin: 0 1%;
 }

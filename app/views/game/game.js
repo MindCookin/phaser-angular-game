@@ -126,7 +126,6 @@ angular.module('myApp.game', ['ngRoute'])
         this.playing = true;
         this.speed = 1;
 
-        this.currentIndex = 0;
         this.showNextPhoto();
     },
 
@@ -210,11 +209,12 @@ angular.module('myApp.game', ['ngRoute'])
           this.photoTween.stop();
         }
 
-        this.currentIndex += 1;
-        this.currentPhoto = this.add.image(0, this.world.centerY, this.rawPhotoData[this.currentIndex].image_url);
+        var photo = Phaser.ArrayUtils.getRandomItem(this.rawPhotoData);
+
+        this.currentPhoto = this.add.image(0, this.world.centerY, photo.image_url);
         this.currentPhoto.anchor.set(0.5);
         this.currentPhoto.x -= this.currentPhoto.width / 2;
-        this.currentTags = this.rawPhotoData[this.currentIndex].tags;
+        this.currentTags = photo.tags;
         this.currentPhoto.alpha = 0;
 
         this.speed *= 1.2;
@@ -241,18 +241,16 @@ angular.module('myApp.game', ['ngRoute'])
         tips.push(KEYS[this.game.rnd.integerInRange(10, 20)]);
         tips.push(KEYS[this.game.rnd.integerInRange(20, KEYS.length - 1)]);
 
-        return tips;
+        return Phaser.ArrayUtils.shuffle(tips);
       },
 
       selectKey: function (k) {
 
-        console.log (k)
-
-        var success = this.currentTags.some(function (value) {
+        var success = this.currentTags.filter(function (value) {
           return value.indexOf(k) === 0;
         })
 
-        if (success) {
+        if (success.length > 0) {
 
             this.keysPressed.push(k);
 
