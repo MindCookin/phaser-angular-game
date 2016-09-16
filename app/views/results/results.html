@@ -10,7 +10,7 @@
 	  </ul>
 	</p>
 	<h3 ng-if="labels.length > 1 && highscore === last.score" class="fadeIn fadeIn4 bold">Congratulations, you've reached your highscore!!</h3>
-	<h3 ng-if="labels.length === 1" class="fadeIn fadeIn4 bold">Play again to see a chart with your progress.</h3>
+	<h3 ng-if="labels.length === 1" class="fadeIn fadeIn3 bold">Play again to see a chart with your progress.</h3>
 	<div>
 	<canvas ng-if="labels.length > 1" id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series"></canvas>
 	</div>
