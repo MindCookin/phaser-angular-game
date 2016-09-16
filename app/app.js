@@ -8,7 +8,6 @@ angular.module('myApp', [
   'myApp.welcome',
   'myApp.game',
   'myApp.results',
-  'myApp.version',
   'chart.js'
 ])
 .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
