@@ -125,6 +125,9 @@ angular.module('myApp.game', ['ngRoute'])
 
         this.playing = true;
         this.speed = 1;
+        this.totalKeys = [];
+        this.successfulTags = [];
+        this.totalTags = [];
 
         this.showNextPhoto();
     },
@@ -139,6 +142,7 @@ angular.module('myApp.game', ['ngRoute'])
             })
 
             this.keysPressed.push(ev.key);
+            this.totalKeys.push(ev.key);
 
             if (success.length > 0) {
               this.success(success);
@@ -152,8 +156,8 @@ angular.module('myApp.game', ['ngRoute'])
 
         this.playing = false;
 
-        this.successfulTags = ([] || this.successfulTags).concat(tags);
-        this.totalTags = ([] || this.totalTags).concat(this.currentTags);
+        this.successfulTags = (this.successfulTags || []).concat(tags);
+        this.totalTags = (this.totalTags || []).concat(this.currentTags);
 
         var tween = this.add.tween(this.currentPhoto).to({
           x: this.world.centerX,
@@ -189,11 +193,6 @@ angular.module('myApp.game', ['ngRoute'])
 
         var keysNeeded = this.keysPressed.length;
         var keysNeededScore = Math.max(10 - keysNeeded, 0);
-
-        this.totalKeys = this.totalKeys || [];
-        this.totalKeys.concat(this.keysPressed);
-
-        console.log(this.totalKeys)
 
         this.totalPhotos = (this.totalPhotos || 0) + 1;
 
@@ -254,10 +253,10 @@ angular.module('myApp.game', ['ngRoute'])
           return value.indexOf(k) === 0;
         })
 
+        this.keysPressed.push(k);
+        this.totalKeys.push(k);
+
         if (success.length > 0) {
-
-            this.keysPressed.push(k);
-
             this.success(success);
         } else {
           this.updateTips();
