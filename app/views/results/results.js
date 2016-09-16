@@ -20,4 +20,14 @@ angular.module('myApp.results', ['ngRoute'])
 	$scope.highscore = data.highscore;
 	$scope.others = data.results.slice(data.results.length - 2);
 	$scope.last = last;
+
+	$scope.labels = data.results.map(function (value, index) { return 'Game ' + (index + 1); });
+	$scope.series = ['Keys Pressed', 'Succesful tags', 'Max speed'];
+
+	$scope.data = data.results.reduce(function (prev, next) { 
+		prev[0].push(next.keysPressed.length)
+		prev[1].push(next.tags.successful.length)
+		prev[2].push(next.maxSpeed)
+		return prev;
+	}, [[], [], []])
 }]);

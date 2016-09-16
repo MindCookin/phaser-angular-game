@@ -3,13 +3,17 @@
 	<h4 class="share">Share it in <a href="#"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a> or <a href="#"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></h4>
 	<p>
 	  <ul>
-	  	<li class="fadeIn fadeI1">{{last.tags.successful}} successful tags of a total of {{last.tags.total.length}}</li>
+	  	<li class="fadeIn fadeI1">{{last.tags.successful.length}} successful tags of a total of {{last.tags.total.length}}</li>
 	  	<li class="fadeIn fadeIn15">You reach a maximum speed of {{last.maxSpeed}}</li>
 	  	<li class="fadeIn fadeIn2">You needed to press a total of {{last.keysPressed.length}} keys</li>
 	  	<li class="fadeIn fadeIn25">Your highscore is {{highscore}}. </span><span ng-if="highscore !== last.score">You have not beat your highscore</span></li>
 	  </ul>
 	</p>
-	<h3 ng-if="highscore === last.score" class="fadeIn fadeIn4 bold">Congratulations, you've reached your highscore!!</h3>
+	<h3 ng-if="labels.length > 1 && highscore === last.score" class="fadeIn fadeIn4 bold">Congratulations, you've reached your highscore!!</h3>
+	<h3 ng-if="labels.length === 1" class="fadeIn fadeIn4 bold">Play again to see a chart with your progress.</h3>
+	<div>
+	<canvas ng-if="labels.length > 1" id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series"></canvas>
+	</div>
 	<p class="button-group fadeIn fadeIn5">
 		<a href="#!/welcome" class="button" >
 		  <span class="away">Home</span>

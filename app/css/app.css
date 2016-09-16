@@ -169,27 +169,6 @@ html, body {
   width: 100%;
 }
 
-body {
-  position: absolute;
-}
-
-.vignette {
-  -webkit-box-shadow: inset 0px 0px 400px rgba(0,2,0,0.2);
-  -moz-box-shadow:    inset 0px 0px 400px rgba(0,2,0,0.2);
-  box-shadow:         inset 0px 0px 400px rgba(0,2,0,0.2);
-}
-
-.vignette:after {
-  -webkit-box-shadow: inset 0px 0px 400px rgba(0,2,0,0.2);
-  -moz-box-shadow:    inset 0px 0px 400px rgba(0,2,0,0.2);
-  box-shadow:         inset 0px 0px 400px rgba(0,2,0,0.2);
-
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  content: "";
-  pointer-events: none;
-}
-
 .button {
   margin: 50px auto 0;
   text-decoration: none;
@@ -288,5 +267,5 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  margin-top: 50px;
+  margin-top: 20px;
 }
