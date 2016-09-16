@@ -166,8 +166,8 @@ angular.module('myApp.game', ['ngRoute'])
         alpha: 0
       }, 300, 'Sine.easeOut', true, 100)
 
-      var style = { font: 'bold 200px Arial', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'middle' }
-      var text = this.game.add.text(0, 0, tags.toString(), style)
+      var style = { font: 'bold 70px Arial', fill: '#fff', boundsAlignH: 'center', boundsAlignV: 'center' }
+      var text = this.game.add.text(0, 0, tags.join('\n').toString(), style)
       text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2)
       text.anchor.set(0.5)
       text.x = this.world.width / 2
@@ -203,6 +203,8 @@ angular.module('myApp.game', ['ngRoute'])
       this.score += this.calcPoints()
       this.scoreText.text = 'SCORE: ' + this.score
 
+      this.currentPhoto.destroy()
+
       this.showNextPhoto()
     },
 
@@ -233,12 +235,19 @@ angular.module('myApp.game', ['ngRoute'])
         var tips = this.updateTips()
         $rootScope.$broadcast('tips', tips)
       }
-
-      console.log(this.currentTags)
     },
 
     updateTips: function () {
-      var tips = [this.currentTags[this.game.rnd.integerInRange(0, this.currentTags.length - 1)].substr(0, 1)]
+
+      var tags = this.currentTags[this.game.rnd.integerInRange(0, this.currentTags.length - 1)]
+
+      var tips = []
+
+      if (tags) {
+        tips.push(tags.substr(0, 1))
+      } else {
+        tips.push(KEYS[this.game.rnd.integerInRange(0, 10)])
+      }
       tips.push(KEYS[this.game.rnd.integerInRange(0, 10)])
       tips.push(KEYS[this.game.rnd.integerInRange(10, 20)])
       tips.push(KEYS[this.game.rnd.integerInRange(20, KEYS.length - 1)])
