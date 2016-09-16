@@ -1,31 +1,33 @@
-'use strict';
+/* global angular */
+
+'use strict'
 
 angular.module('myApp')
 
-.factory('GameResults', function() {
+.factory('GameResults', function () {
 
-	var results = [];
+  var results = []
 
-	function calcHighscore () {
+  function calcHighscore () {
 
-		return results
-			.map(function (v) {
-				return v.score;
-			})
-			.reduce(function(a, b){
-				return Math.max(a, b);
-			})
-	}
+    return results
+      .map(function (v) {
+        return v.score
+      })
+      .reduce(function (a, b) {
+        return Math.max(a, b)
+      })
+  }
 
-  	return {
-		set: function (newResults) {
-			results.push(newResults);
-		},
-		get: function () {
-			return {
-				results: results,
-				highscore: calcHighscore() 
-			};
-		}
-	}
-});
+  return {
+    set: function (newResults) {
+      results.push(newResults)
+    },
+    get: function () {
+      return {
+        results: results,
+        highscore: calcHighscore()
+      }
+    }
+  }
+})
